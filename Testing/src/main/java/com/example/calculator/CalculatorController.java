@@ -1,5 +1,6 @@
 package com.example.calculator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,40 +11,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/calculator")
 public class CalculatorController {
 	
+	@Autowired
+	private CalculatorService calculatorService;
+	
+	
 	@GetMapping
 	public String calculate(
 			@RequestParam double a,
 			@RequestParam double b,
 			@RequestParam String operation) {
 		
-		double result;
-		
-		switch(operation.toLowerCase()) {
-			case "add":
-				result = a + b;
-				break;
-				
-			case "sub":
-				result = a - b;
-				break;
-				
-			case "mul":
-				result = a * b;
-				break;
-				
-			case "div":
-				if(b != 0) {
-					result = a / b;
-				} else {
-					return "Cannot divided by zero..!";
-				}
-				break;
-				
-			default:
-				return "Invalid Operation.. Please use add / sub / mul / div";
+			try {
+	            double result = calculatorService.calculate(a, b, operation);
+	            return "Result: " + result;
+	        } catch (IllegalArgumentException e) {
+	            return e.getMessage();
+	        }
 		}
 		
-		return "Result: " + result;
-		
-	}
 }
+
