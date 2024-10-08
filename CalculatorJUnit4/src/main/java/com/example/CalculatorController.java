@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CalculatorController {
 	
 	@Autowired
-	public CalculatorService calculatorService;
+	private CalculatorService calculatorService;
 	
 	@GetMapping("/add")
 	public int add(@RequestParam int a, @RequestParam int b) {
